@@ -1,10 +1,11 @@
 {
-   "name": "modulearn-be",
+   "name": "great-app",
    "version": "0.0.0",
-   "description": "Modulearn-be MayaJS Project",
+   "description": "Great-app MayaJS Project",
    "main": "index.js",
    "scripts": {
-      "maya": "maya s",
+      "serve": "maya s",
+      "maya": "maya",
       "start": "maya serve"
    },
    "keywords": [
@@ -13,15 +14,17 @@
    "dependencies": {
       "@mayajs/common": "^0.3.0",
       "@mayajs/core": "^0.3.2",
-      "@mayajs/mongo": "0.2.0",
+      "@mayajs/mongo": "^0.2.2",
       "dotenv": "^8.2.0",
+      "http-errors": "^1.7.3",
       "http-status": "^1.4.2"
    },
    "devDependencies": {
       "@types/dotenv": "^8.2.0",
       "@types/express": "^4.17.0",
+      "@types/http-errors": "^1.6.3",
       "@types/http-status": "^1.1.2",
-      "@types/mongoose": "^5.7.7",
+      "@types/mongoose": "^5.5.13",
       "@types/node": "^12.7.1",
       "ts-node": "^8.4.1",
       "typescript": "^3.5.3"
