@@ -31,8 +31,6 @@ export class GuideController {
    async list(req: Request, res: Response) {
       let guides: IGuideV2[];
       if (req.query) {
-         console.log(req.query);
-
          guides = await this.guideService.find(req.query);
       } else {
          guides = await this.guideService.list();
