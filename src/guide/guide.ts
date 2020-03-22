@@ -61,6 +61,8 @@ export interface IGuideV2 {
    readonly steps: IGuideStep[];
    readonly components: IGuideComponents[];
    readonly ingredients: IGuideIngredients[];
+   readonly isDraft: boolean;
+   readonly isPublished: boolean;
 }
 
 export interface IGuideModel extends IGuide, Document {}

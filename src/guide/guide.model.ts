@@ -85,6 +85,14 @@ const guideSchema_v2 = MongoSchema(
       steps: [guideStepSchema],
       components: [guideComponentIngredientSchema],
       ingredients: [guideComponentIngredientSchema],
+      isDraft: {
+         type: Boolean,
+         default: true,
+      },
+      isPublished: {
+         type: Boolean,
+         default: true,
+      },
    },
    { timestamps: true }
 );
