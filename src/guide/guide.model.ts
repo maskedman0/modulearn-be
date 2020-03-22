@@ -30,6 +30,38 @@ const mediaSchema = MongoSchema({
    },
 });
 
+const guideComponentIngredientSchema = MongoSchema({
+   media: [mediaSchema],
+   description: {
+      type: String,
+   },
+   additionalInfo: {
+      type: String,
+   },
+});
+
+const guideStepSchema = MongoSchema({
+   media: [mediaSchema],
+   instructionMarkUp: {
+      type: String,
+   },
+});
+
+const guideEstimatedCompletionSchema = MongoSchema(
+   {
+      timeNum: {
+         default: 1,
+         type: Number,
+      },
+      unit: {
+         enum: ["minute", "hour", "day", "week"],
+         default: "hour",
+         type: String,
+      },
+   },
+   { _id: false }
+);
+
 const guideSchema_v2 = MongoSchema(
    {
       title: {
@@ -45,49 +77,14 @@ const guideSchema_v2 = MongoSchema(
          default: "easy",
          type: String,
       },
-      estimatedCompletionTime: {
-         default: 1,
-         type: Number,
-      },
-      estimatedCompletionUnit: {
-         enum: ["minute", "hour", "day", "week"],
-         default: "hour",
-         type: String,
-      },
+      estimatedCompletion: guideEstimatedCompletionSchema,
       intro: {
          type: String,
       },
       previewMedia: mediaSchema,
-      steps: [
-         {
-            media: [mediaSchema],
-            instructionMarkUp: {
-               type: String,
-            },
-         },
-      ],
-      components: [
-         {
-            media: [mediaSchema],
-            description: {
-               type: String,
-            },
-            additionalInfo: {
-               type: String,
-            },
-         },
-      ],
-      ingredients: [
-         {
-            media: [mediaSchema],
-            description: {
-               type: String,
-            },
-            additionalInfo: {
-               type: String,
-            },
-         },
-      ],
+      steps: [guideStepSchema],
+      components: [guideComponentIngredientSchema],
+      ingredients: [guideComponentIngredientSchema],
    },
    { timestamps: true }
 );

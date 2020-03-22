@@ -46,12 +46,16 @@ export interface IGuideIngredients {
    readonly additionalInfo: string;
 }
 
+export interface IGuideEstimatedCompletion {
+   readonly timeNum: number;
+   readonly unit: GuideEstimatedCompletionUnit;
+}
+
 export interface IGuideV2 {
    readonly title: string;
    readonly creator: string;
    readonly difficulty: GuideDifficulty;
-   readonly estimatedCompletionTime: number;
-   readonly estimatedCompletionUnit: string;
+   readonly estimatedCompletion: IGuideEstimatedCompletion;
    readonly intro: string;
    readonly previewMedia: IGuideMedia;
    readonly steps: IGuideStep[];
