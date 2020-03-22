@@ -1,13 +1,13 @@
 import { Injectable } from "@mayajs/core";
 import { Models } from "@mayajs/mongo";
 import { Model } from "mongoose";
-import { IGuideModel, IGuide } from "./guide";
+import { IGuideV2Model, IGuideV2 } from "./guide";
 
 @Injectable()
 export class GuideService {
-   @Models("guide") bookModel: Model<IGuideModel>;
+   @Models("guide") bookModel: Model<IGuideV2Model>;
 
-   async create(book: IGuide): Promise<IGuide> {
+   async create(book: IGuideV2): Promise<IGuideV2> {
       try {
          return await (await this.bookModel.create(book)).save();
       } catch (error) {
@@ -15,7 +15,7 @@ export class GuideService {
       }
    }
 
-   async list(): Promise<IGuide[]> {
+   async list(): Promise<IGuideV2[]> {
       try {
          return await this.bookModel.find().exec();
       } catch (error) {
@@ -23,7 +23,7 @@ export class GuideService {
       }
    }
 
-   async find(query: any): Promise<IGuide[]> {
+   async find(query: any): Promise<IGuideV2[]> {
       try {
          return await this.bookModel.find(query).exec();
       } catch (error) {
@@ -31,7 +31,7 @@ export class GuideService {
       }
    }
 
-   async findOne(query: any): Promise<IGuide> {
+   async findOne(query: any): Promise<IGuideV2> {
       try {
          return await this.bookModel.findOne(query).exec();
       } catch (error) {
@@ -39,7 +39,7 @@ export class GuideService {
       }
    }
 
-   async update(id: string, book: IGuide): Promise<IGuide> {
+   async update(id: string, book: IGuideV2): Promise<IGuideV2> {
       try {
          return await this.bookModel.findByIdAndUpdate(id, { $set: book }, { new: true, runValidators: true }).exec();
       } catch (error) {
@@ -47,7 +47,7 @@ export class GuideService {
       }
    }
 
-   async delete(id: string): Promise<IGuide> {
+   async delete(id: string): Promise<IGuideV2> {
       try {
          return await this.bookModel.findByIdAndDelete(id).exec();
       } catch (error) {

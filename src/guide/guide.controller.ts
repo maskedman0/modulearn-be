@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { Controller } from "@mayajs/core";
 import { GuideService } from "./guide.service";
 import { CREATED, OK, NOT_FOUND, UNPROCESSABLE_ENTITY } from "http-status";
-import { IGuide } from "./guide";
+import { IGuideV2 } from "./guide";
 
 @Controller({
    model: "./guide.model",
@@ -14,7 +14,7 @@ export class GuideController {
 
    @Post({ path: "/" })
    async add(req: Request, res: Response) {
-      const createdGuide = await this.guideService.create(req.body as IGuide);
+      const createdGuide = await this.guideService.create(req.body as IGuideV2);
       if (!createdGuide) {
          res.status(UNPROCESSABLE_ENTITY)
             .send("Invalid guide object.")
@@ -29,7 +29,7 @@ export class GuideController {
 
    @Get({ path: "/" })
    async list(req: Request, res: Response) {
-      let guides: IGuide[];
+      let guides: IGuideV2[];
       if (req.query) {
          console.log(req.query);
 
