@@ -1,4 +1,4 @@
-# Great-app MayaJS Project
+# Modulearn-API - A MayaJS Project
 
 This project was created with [MayaJS CLI](https://github.com/mayajs/cli) version 0.3.0.
 
