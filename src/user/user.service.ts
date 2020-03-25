@@ -33,4 +33,8 @@ export class UserService {
          );
       });
    }
+
+   async findOne(query: {}): Promise<IUser> {
+      return await this.userModel.findOne(query).exec();
+   }
 }
