@@ -17,7 +17,10 @@
       "@mayajs/mongo": "^0.2.2",
       "dotenv": "^8.2.0",
       "http-errors": "^1.7.3",
-      "http-status": "^1.4.2"
+      "http-status": "^1.4.2",
+      "passport": "^0.4.1",
+      "passport-local": "^1.0.0",
+      "passport-local-mongoose": "^6.0.1"
    },
    "devDependencies": {
       "@types/dotenv": "^8.2.0",
@@ -26,6 +29,9 @@
       "@types/http-status": "^1.1.2",
       "@types/mongoose": "^5.5.13",
       "@types/node": "^12.7.1",
+      "@types/passport": "^1.0.3",
+      "@types/passport-local": "^1.0.33",
+      "@types/passport-local-mongoose": "^4.0.13",
       "ts-node": "^8.4.1",
       "typescript": "^3.5.3"
    }
