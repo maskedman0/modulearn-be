@@ -18,6 +18,7 @@ export interface IUser {
    readonly userType: UserType;
    readonly email?: string;
    readonly password?: string;
+   readonly confirmPassword?: string;
    readonly username?: string;
    readonly gender?: Gender;
    readonly birthDate?: Date | string;
