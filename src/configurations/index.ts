@@ -1,7 +1,9 @@
 import { config } from "dotenv";
+import configurePassport from "./passport.config";
+
 config();
 
-export const configurations = {
+const configurations = {
    production: process.env.NODE_ENV === "production" ? true : false,
    MONGO_URL: process.env.MONGO_URL || "",
    APP_PORT: process.env.APP_PORT || 3333,
@@ -9,3 +11,5 @@ export const configurations = {
    API_VERSION: process.env.API_VERSION || "",
    API_SECRET: process.env.API_SECRET || "",
 };
+
+export { configurations, configurePassport };
