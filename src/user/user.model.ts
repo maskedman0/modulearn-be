@@ -20,7 +20,7 @@ const userSchema = MongoSchema(
          type: String,
          enum: ["m", "f", "u"],
       },
-      birthDate: String,
+      birthDate: Date,
       fullAddress: String,
       mobile: String,
       phone: String,
@@ -31,6 +31,16 @@ const userSchema = MongoSchema(
 const passportLocalMongooseOptions = {
    limitAttempts: true,
    maxAttempts: 5,
+   errorMessages: {
+      MissingPasswordError: "No password was given",
+      AttemptTooSoonError: "Account is currently locked. Try again later",
+      TooManyAttemptsError: "Account locked due to too many failed login attempts",
+      NoSaltValueStoredError: "Authentication not possible. No salt value stored",
+      IncorrectPasswordError: "Password or username is incorrect",
+      IncorrectUsernameError: "Password or username is incorrect",
+      MissingUsernameError: "No email was given",
+      UserExistsError: "A user with the given email is already registered",
+   },
 };
 
 userSchema.plugin(passportLocalMongoose, passportLocalMongooseOptions);
