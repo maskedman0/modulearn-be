@@ -1,5 +1,5 @@
 import { MongoSchema, MongoModel } from "@mayajs/mongo";
-
+import passportLocalMongoose from "passport-local-mongoose";
 const userSchema = MongoSchema(
    {
       firstName: {
@@ -27,5 +27,12 @@ const userSchema = MongoSchema(
    },
    { timestamps: true }
 );
+
+const passportLocalMongooseOptions = {
+   limitAttempts: true,
+   maxAttempts: 5,
+};
+
+userSchema.plugin(passportLocalMongoose, passportLocalMongooseOptions);
 
 export default MongoModel("User", userSchema);
