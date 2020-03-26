@@ -28,3 +28,8 @@ export interface IUser {
 }
 
 export interface IUserModel extends IUser, Document {}
+
+export interface IUserModelToken {
+   readonly user: IUserModel;
+   readonly token: string;
+}
