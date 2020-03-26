@@ -1,12 +1,14 @@
 import { Injectable } from "@mayajs/core";
 import { Models } from "@mayajs/mongo";
 import { Model } from "mongoose";
-import { IUserModel, IUser } from "./user";
+import { IUserModel, IUser, IUserModelToken } from "./user";
 import User from "./user.model";
+import { sign } from "jsonwebtoken";
+import { configurations } from "../configurations";
 
 @Injectable()
 export class UserService {
-   @Models("user") userModel: Model<IUserModel>;
+   @Models("users") userModel: Model<IUserModel>;
 
    async register(user: IUser): Promise<IUser> {
       return new Promise((resolve, reject) => {
@@ -34,7 +36,19 @@ export class UserService {
       });
    }
 
-   async findOne(query: {}): Promise<IUser> {
+   async findOne(query: {}): Promise<IUserModel> {
       return await this.userModel.findOne(query).exec();
+   }
+
+   async generatePublisherToken(email: string): Promise<IUserModelToken> {
+      const user = await this.findOne({ userType: "publisher", username: email });
+
+      if (user) {
+         const payload = { id: user._id, role: user.userType };
+         return {
+            user,
+            token: sign(payload, configurations.API_SECRET, { expiresIn: configurations.API_TOKEN_TIME }),
+         };
+      }
    }
 }
