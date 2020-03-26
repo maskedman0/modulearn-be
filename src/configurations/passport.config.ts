@@ -1,8 +1,10 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
 import User from "../user/user.model";
+import { MayaJS } from "@mayajs/core";
 
-export default () => {
+export default (server: MayaJS) => {
+   server.use(passport.initialize());
    passport.use(
       new Strategy(
          {
@@ -14,4 +16,5 @@ export default () => {
    );
    passport.serializeUser(User.serializeUser());
    passport.deserializeUser(User.deserializeUser());
+   return server;
 };
