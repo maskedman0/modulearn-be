@@ -10,6 +10,7 @@ const configurations = {
    API_ROOT: process.env.API_ROOT || "/api",
    API_VERSION: process.env.API_VERSION || "",
    API_SECRET: process.env.API_SECRET || "",
+   API_TOKEN_TIME: process.env.API_TOKEN_TIME || "",
 };
 
 export { configurations, configurePassport };
