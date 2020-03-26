@@ -5,6 +5,7 @@ import { IUserModel, IUser, IUserModelToken } from "./user";
 import User from "./user.model";
 import { sign } from "jsonwebtoken";
 import { configurations } from "../configurations";
+import { Unauthorized } from "http-errors";
 
 @Injectable()
 export class UserService {
@@ -40,15 +41,17 @@ export class UserService {
       return await this.userModel.findOne(query).exec();
    }
 
-   async generatePublisherToken(email: string): Promise<IUserModelToken> {
-      const user = await this.findOne({ userType: "publisher", username: email });
+   async generateToken(email: string, userType: string): Promise<IUserModelToken> {
+      const user = await this.findOne({ userType, username: email });
 
-      if (user) {
-         const payload = { id: user._id, role: user.userType };
-         return {
-            user,
-            token: sign(payload, configurations.API_SECRET, { expiresIn: configurations.API_TOKEN_TIME }),
-         };
+      if (!user) {
+         throw new Unauthorized("Invalid user credentials.");
       }
+
+      const payload = { id: user._id, role: user.userType };
+      return {
+         user,
+         token: sign(payload, configurations.API_SECRET, { expiresIn: configurations.API_TOKEN_TIME }),
+      };
    }
 }
