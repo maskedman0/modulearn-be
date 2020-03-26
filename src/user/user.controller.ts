@@ -28,15 +28,53 @@ export class UserController {
    }
 
    @Post({
-      path: "/login",
+      path: "/publisher/login",
       middlewares: [localAuth],
    })
-   async login(req: Request, res: Response) {
-      const userToken = await this.userService.generatePublisherToken(req.body.email);
-      if (userToken.token) {
-         returnSuccess({ res, status: OK, message: `Welcome back ${userToken.user.firstName}`, data: { token: userToken.token } });
-      } else {
-         returnError({ res, status: FORBIDDEN, data: { error: { message: "Invalid Credentials" } } });
+   async publisherLogin(req: Request, res: Response) {
+      try {
+         const userToken = await this.userService.generateToken(req.body.email, "publisher");
+         if (!userToken && !userToken.token) {
+            returnError({ res, status: FORBIDDEN, data: { error: { message: "Invalid Credentials" } } });
+         } else {
+            returnSuccess({ res, status: OK, message: `Welcome back ${userToken.user.firstName}!`, data: { token: userToken.token } });
+         }
+      } catch (error) {
+         returnError({ res, status: error.status || 500, message: error.message, data: { error: { message: "Invalid Credentials" } } });
+      }
+   }
+
+   @Post({
+      path: "/reader/login",
+      middlewares: [localAuth],
+   })
+   async readerLogin(req: Request, res: Response) {
+      try {
+         const userToken = await this.userService.generateToken(req.body.email, "reader");
+         if (!userToken && !userToken.token) {
+            returnError({ res, status: FORBIDDEN, data: { error: { message: "Invalid Credentials" } } });
+         }
+         returnSuccess({ res, status: OK, message: `Welcome back ${userToken.user.firstName}!`, data: { token: userToken.token } });
+      } catch (error) {
+         returnError({ res, status: error.status || 500, message: error.message, data: { error: { message: "Invalid Credentials" } } });
+      }
+   }
+
+   @Post({
+      path: "/admin/login",
+      middlewares: [localAuth],
+   })
+   async adminLogin(req: Request, res: Response) {
+      try {
+         const userToken = await this.userService.generateToken(req.body.email, "admin");
+
+         if (!userToken && !userToken.token) {
+            returnError({ res, status: FORBIDDEN, data: { error: { message: "Invalid Credentials" } } });
+         }
+
+         returnSuccess({ res, status: OK, message: `Welcome back ${userToken.user.firstName}!`, data: { token: userToken.token } });
+      } catch (error) {
+         returnError({ res, status: error.status || 500, message: error.message, data: { error: { message: "Invalid Credentials" } } });
       }
    }
 }
