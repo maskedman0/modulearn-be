@@ -11,7 +11,7 @@ export class GuideService {
       try {
          return await (await this.bookModel.create(book)).save();
       } catch (error) {
-         return error;
+         throw error;
       }
    }
 
@@ -19,7 +19,7 @@ export class GuideService {
       try {
          return await this.bookModel.find().exec();
       } catch (error) {
-         throw new Error(error.message);
+         throw error;
       }
    }
 
@@ -27,7 +27,7 @@ export class GuideService {
       try {
          return await this.bookModel.find(query).exec();
       } catch (error) {
-         throw new Error(error.message);
+         throw error;
       }
    }
 
@@ -35,7 +35,7 @@ export class GuideService {
       try {
          return await this.bookModel.findOne(query).exec();
       } catch (error) {
-         throw new Error(error.message);
+         throw error;
       }
    }
 
@@ -43,7 +43,7 @@ export class GuideService {
       try {
          return await this.bookModel.findByIdAndUpdate(id, { $set: book }, { new: true, runValidators: true }).exec();
       } catch (error) {
-         throw new Error(error.message);
+         throw error;
       }
    }
 
@@ -51,7 +51,7 @@ export class GuideService {
       try {
          return await this.bookModel.findByIdAndDelete(id).exec();
       } catch (error) {
-         throw new Error(GuideService.name + error.message);
+         throw error;
       }
    }
 }

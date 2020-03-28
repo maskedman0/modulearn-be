@@ -1,41 +1,40 @@
 import { Request, Response, NextFunction } from "express";
-import returnError from "../functions/return-error.function";
+import errorResponse from "../functions/return-error.function";
 import { FORBIDDEN } from "http-status";
+
+const unAuthMessage = "Not authorize to perform this action.";
 
 export function IsAdmin(req: Request | any, res: Response, next: NextFunction) {
    if (req.user && req.user.role !== "admin") {
-      returnError({
+      return errorResponse({
          res,
          status: FORBIDDEN,
-         message: "Invalid role",
-         data: { error: { message: "Invalid role" } },
+         message: `${unAuthMessage}`,
+         data: { error: { message: `${unAuthMessage}` } },
       });
-   } else {
-      next();
    }
+   next();
 }
 
 export function IsPublisher(req: Request | any, res: Response, next: NextFunction) {
    if (req.user && req.user.role !== "publisher") {
-      returnError({
+      return errorResponse({
          res,
          status: FORBIDDEN,
-         message: "Invalid role",
-         data: { error: { message: "Invalid role" } },
+         message: `${unAuthMessage}`,
+         data: { error: { message: `${unAuthMessage}` } },
       });
-   } else {
-      next();
    }
+   next();
 }
 export function IsReader(req: Request | any, res: Response, next: NextFunction) {
    if (req.user && req.user.role !== "reader") {
-      returnError({
+      return errorResponse({
          res,
          status: FORBIDDEN,
-         message: "Invalid role",
-         data: { error: { message: "Invalid role" } },
+         message: `${unAuthMessage}`,
+         data: { error: { message: `${unAuthMessage}` } },
       });
-   } else {
-      next();
    }
+   next();
 }

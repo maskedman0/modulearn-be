@@ -31,6 +31,7 @@ const userSchema = MongoSchema(
 const passportLocalMongooseOptions = {
    limitAttempts: true,
    maxAttempts: 5,
+   maxInterval: 20000,
    errorMessages: {
       MissingPasswordError: "No password was given",
       AttemptTooSoonError: "Account is currently locked. Try again later",

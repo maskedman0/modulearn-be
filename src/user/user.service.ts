@@ -1,19 +1,21 @@
 import { Injectable } from "@mayajs/core";
 import { Models } from "@mayajs/mongo";
-import { Model } from "mongoose";
+import { PassportLocalModel } from "mongoose";
+import { sign } from "jsonwebtoken";
+import { Unauthorized, Forbidden } from "http-errors";
+
+import { configurations } from "../configurations";
+
 import { IUserModel, IUser, IUserModelToken } from "./user";
 import User from "./user.model";
-import { sign } from "jsonwebtoken";
-import { configurations } from "../configurations";
-import { Unauthorized } from "http-errors";
 
 @Injectable()
 export class UserService {
-   @Models("users") userModel: Model<IUserModel>;
+   @Models("users") userModel: PassportLocalModel<IUserModel>;
 
    async register(user: IUser): Promise<IUser> {
-      return new Promise((resolve, reject) => {
-         User.register(
+      return new Promise(async (resolve, reject) => {
+         await User.register(
             new User({
                firstName: user.firstName,
                lastName: user.lastName,

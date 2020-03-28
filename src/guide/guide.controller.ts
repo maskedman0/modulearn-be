@@ -1,9 +1,15 @@
 import { Get, Post, Delete, Put } from "@mayajs/common";
-import { Request, Response } from "express";
 import { Controller } from "@mayajs/core";
+import { Request, Response } from "express";
+import { CREATED, OK, NOT_FOUND } from "http-status";
+import { UnprocessableEntity, NotFound } from "http-errors";
+
+import respondError from "../shared/functions/return-error.function";
+import successResponse from "../shared/functions/return-success.function";
+
 import { GuideService } from "./guide.service";
-import { CREATED, OK, NOT_FOUND, UNPROCESSABLE_ENTITY } from "http-status";
 import { IGuideV2 } from "./guide";
+import { IsPublisher } from "../shared/middlewares/permissions.middleware";
 
 @Controller({
    model: "./guide.model",
@@ -12,63 +18,64 @@ import { IGuideV2 } from "./guide";
 export class GuideController {
    constructor(private guideService: GuideService) {}
 
-   @Post({ path: "/" })
+   @Post({ path: "/", middlewares: [IsPublisher] })
    async add(req: Request, res: Response) {
-      const createdGuide = await this.guideService.create(req.body as IGuideV2);
-      if (!createdGuide) {
-         res.status(UNPROCESSABLE_ENTITY)
-            .send("Invalid guide object.")
-            .end();
-         return;
-      }
+      try {
+         const createdGuide = await this.guideService.create(req.body as IGuideV2);
 
-      res.status(CREATED)
-         .send(createdGuide)
-         .end();
+         if (!createdGuide) {
+            throw new UnprocessableEntity("Invalid guide object.");
+         }
+
+         return successResponse({ res, status: CREATED, data: createdGuide });
+      } catch (error) {
+         respondError({ res, status: error.status, message: error.message, data: { error: { message: error.message || "Error" } } });
+      }
    }
 
    @Get({ path: "/" })
    async list(req: Request, res: Response) {
-      let guides: IGuideV2[];
-      if (req.query) {
-         guides = await this.guideService.find(req.query);
-      } else {
-         guides = await this.guideService.list();
-      }
+      try {
+         let guides: IGuideV2[];
+         if (req.query) {
+            guides = await this.guideService.find(req.query);
+         } else {
+            guides = await this.guideService.list();
+         }
 
-      res.status(OK)
-         .send(guides)
-         .end();
+         return successResponse({ res, status: OK, data: guides });
+      } catch (error) {
+         respondError({ res, status: error.status, message: error.message, data: { error: { message: error.message || "Error" } } });
+      }
    }
 
    @Get({ path: "/:id" })
    async findById(req: Request, res: Response) {
-      const guide = await this.guideService.findOne({ _id: req.params.id });
-      if (!guide) {
-         res.status(NOT_FOUND)
-            .send("Guide not found.")
-            .end();
-         return;
-      }
+      try {
+         const guide = await this.guideService.findOne({ _id: req.params.id });
+         if (!guide) {
+            throw new NotFound("Guide not found.");
+         }
 
-      res.status(OK)
-         .send(guide)
-         .end();
+         return successResponse({ res, status: OK, data: guide });
+      } catch (error) {
+         respondError({ res, status: error.status, message: error.message, data: { error: { message: error.message || "Error" } } });
+      }
    }
 
    @Put({ path: "/:id" })
    async update(req: Request, res: Response) {
-      const updatedGuide = await this.guideService.update(req.params.id, req.body);
-      if (!updatedGuide) {
-         res.status(NOT_FOUND)
-            .send("Guide not found.")
-            .end();
-         return;
-      }
+      try {
+         const updatedGuide = await this.guideService.update(req.params.id, req.body);
 
-      res.status(OK)
-         .send(updatedGuide)
-         .end();
+         if (!updatedGuide) {
+            throw new NotFound("Guide not found.");
+         }
+
+         return successResponse({ res, status: OK, data: updatedGuide });
+      } catch (error) {
+         respondError({ res, status: error.status, message: error.message, data: { error: { message: error.message || "Error" } } });
+      }
    }
 
    @Delete({ path: "/:id" })
@@ -77,17 +84,12 @@ export class GuideController {
          const deletedGuide = await this.guideService.delete(req.params.id);
 
          if (!deletedGuide) {
-            res.status(NOT_FOUND)
-               .send("Guide not found.")
-               .end();
-            return;
+            throw new NotFound("Guide not found.");
          }
 
-         res.status(OK)
-            .send(deletedGuide)
-            .end();
+         return successResponse({ res, status: OK, data: deletedGuide });
       } catch (error) {
-         throw new Error(error.message);
+         respondError({ res, status: error.status, message: error.message, data: { error: { message: error.message || "Error" } } });
       }
    }
 }
