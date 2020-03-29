@@ -19,9 +19,10 @@ export class GuideController {
    constructor(private guideService: GuideService) {}
 
    @Post({ path: "/", middlewares: [IsPublisher] })
-   async add(req: Request, res: Response) {
+   async add(req: Request | any, res: Response) {
       try {
-         const createdGuide = await this.guideService.create(req.body as IGuideV2);
+         const guideToCreate = { ...req.body, creatorId: req.user.id } as IGuideV2;
+         const createdGuide = await this.guideService.create(guideToCreate);
 
          if (!createdGuide) {
             throw new UnprocessableEntity("Invalid guide object.");
