@@ -14,38 +14,47 @@ import { MongoSchema, MongoModel } from "@mayajs/mongo";
 //    { timestamps: true }
 // );
 
-const mediaSchema = MongoSchema({
-   mediaType: {
-      enum: ["image", "video"],
-      required: [true, "mediaType is required"],
-      type: String,
+const mediaSchema = MongoSchema(
+   {
+      mediaType: {
+         enum: ["image", "video"],
+         required: [true, "mediaType is required"],
+         type: String,
+      },
+      mediaUrl: {
+         required: [true, " mediaUrl is required"],
+         type: String,
+      },
+      publicId: {
+         required: [true, "publicId is required"],
+         type: String,
+      },
    },
-   mediaUrl: {
-      required: [true, " mediaUrl is required"],
-      type: String,
-   },
-   publicId: {
-      required: [true, "publicId is required"],
-      type: String,
-   },
-});
+   { _id: false }
+);
 
-const guideComponentIngredientSchema = MongoSchema({
-   media: [mediaSchema],
-   description: {
-      type: String,
+const guideComponentIngredientSchema = MongoSchema(
+   {
+      media: [mediaSchema],
+      description: {
+         type: String,
+      },
+      additionalInfo: {
+         type: String,
+      },
    },
-   additionalInfo: {
-      type: String,
-   },
-});
+   { _id: false }
+);
 
-const guideStepSchema = MongoSchema({
-   media: [mediaSchema],
-   instructionMarkUp: {
-      type: String,
+const guideStepSchema = MongoSchema(
+   {
+      media: [mediaSchema],
+      instructionMarkUp: {
+         type: String,
+      },
    },
-});
+   { _id: false }
+);
 
 const guideEstimatedCompletionSchema = MongoSchema(
    {
@@ -68,8 +77,8 @@ const guideSchema_v2 = MongoSchema(
          required: [true, "Title is required."],
          type: String,
       },
-      creator: {
-         required: [true, "Creator is required."],
+      creatorId: {
+         required: [true, "Creator ID is required"],
          type: String,
       },
       difficulty: {
