@@ -1,77 +1,51 @@
 import { MongoSchema, MongoModel } from "@mayajs/mongo";
 
-// const guideSchema = MongoSchema(
-//    {
-//       title: {
-//          required: [true, "Title is required."],
-//          type: String,
-//       },
-//       author: {
-//          required: [true, "Author is required."],
-//          type: String,
-//       },
-//    },
-//    { timestamps: true }
-// );
-
-const mediaSchema = MongoSchema(
-   {
-      mediaType: {
-         enum: ["image", "video"],
-         required: [true, "mediaType is required"],
-         type: String,
-      },
-      mediaUrl: {
-         required: [true, " mediaUrl is required"],
-         type: String,
-      },
-      publicId: {
-         required: [true, "publicId is required"],
-         type: String,
-      },
+const mediaSchema = MongoSchema({
+   mediaType: {
+      enum: ["image", "video"],
+      required: [true, "mediaType is required"],
+      type: String,
    },
-   { _id: false }
-);
-
-const guideComponentIngredientSchema = MongoSchema(
-   {
-      media: [mediaSchema],
-      description: {
-         type: String,
-      },
-      additionalInfo: {
-         type: String,
-      },
+   mediaUrl: {
+      required: [true, " mediaUrl is required"],
+      type: String,
    },
-   { _id: false }
-);
-
-const guideStepSchema = MongoSchema(
-   {
-      media: [mediaSchema],
-      instructionMarkUp: {
-         type: String,
-      },
+   publicId: {
+      required: [true, "publicId is required"],
+      type: String,
    },
-   { _id: false }
-);
+});
 
-const guideEstimatedCompletionSchema = MongoSchema(
-   {
-      timeNum: {
-         default: 1,
-         type: Number,
-      },
-      unit: {
-         enum: ["minute", "hour", "day", "week"],
-         default: "hour",
-         type: String,
-      },
+const guideComponentIngredientSchema = MongoSchema({
+   media: [mediaSchema],
+   description: {
+      type: String,
    },
-   { _id: false }
-);
+   additionalInfo: {
+      type: String,
+   },
+});
 
-const guideSchema_v2 = MongoSchema(
+const guideStepSchema = MongoSchema({
+   media: [mediaSchema],
+   instructionMarkUp: {
+      type: String,
+   },
+});
+
+const guideEstimatedCompletionSchema = MongoSchema({
+   timeNum: {
+      default: 1,
+      type: Number,
+   },
+   unit: {
+      enum: ["minute", "hour", "day", "week"],
+      default: "hour",
+      type: String,
+   },
+});
+
+const guideSchema = MongoSchema(
    {
       title: {
          required: [true, "Title is required."],
@@ -87,9 +61,7 @@ const guideSchema_v2 = MongoSchema(
          type: String,
       },
       estimatedCompletion: guideEstimatedCompletionSchema,
-      intro: {
-         type: String,
-      },
+      intro: String,
       previewMedia: mediaSchema,
       steps: [guideStepSchema],
       components: [guideComponentIngredientSchema],
@@ -106,4 +78,4 @@ const guideSchema_v2 = MongoSchema(
    { timestamps: true }
 );
 
-export default MongoModel("Guide", guideSchema_v2);
+export default MongoModel("Guide", guideSchema);

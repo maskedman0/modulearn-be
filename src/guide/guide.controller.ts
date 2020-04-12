@@ -8,7 +8,7 @@ import respondError from "../shared/functions/return-error.function";
 import successResponse from "../shared/functions/return-success.function";
 
 import { GuideService } from "./guide.service";
-import { IGuideV2 } from "./guide";
+import { IGuide } from "./guide";
 import { IsPublisher } from "../shared/middlewares/permissions.middleware";
 
 @Controller({
@@ -21,7 +21,7 @@ export class GuideController {
    @Post({ path: "/", middlewares: [IsPublisher] })
    async add(req: Request | any, res: Response) {
       try {
-         const guideToCreate = { ...req.body, creatorId: req.user.id } as IGuideV2;
+         const guideToCreate = { ...req.body, creatorId: req.user.id } as IGuide;
          const createdGuide = await this.guideService.create(guideToCreate);
 
          if (!createdGuide) {
@@ -37,7 +37,7 @@ export class GuideController {
    @Get({ path: "/" })
    async list(req: Request, res: Response) {
       try {
-         let guides: IGuideV2[];
+         let guides: IGuide[];
          if (req.query) {
             guides = await this.guideService.find(req.query);
          } else {

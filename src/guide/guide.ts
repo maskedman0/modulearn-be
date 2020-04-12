@@ -1,10 +1,5 @@
 import { Document } from "mongoose";
 
-export interface IGuide {
-   readonly title: string;
-   readonly author: string;
-}
-
 export enum GuideEstimatedCompletionUnit {
    minute = "minute",
    hour = "hour",
@@ -51,7 +46,7 @@ export interface IGuideEstimatedCompletion {
    readonly unit: GuideEstimatedCompletionUnit;
 }
 
-export interface IGuideV2 {
+export interface IGuide {
    readonly title: string;
    readonly creator: string;
    readonly difficulty: GuideDifficulty;
@@ -66,4 +61,3 @@ export interface IGuideV2 {
 }
 
 export interface IGuideModel extends IGuide, Document {}
-export interface IGuideV2Model extends IGuideV2, Document {}
