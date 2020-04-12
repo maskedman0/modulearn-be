@@ -2,10 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import errorResponse from "../functions/return-error.function";
 import { FORBIDDEN } from "http-status";
 
-const unAuthMessage = "Not authorize to perform this action.";
+const unAuthMessage = "Not authorized to perform this action.";
 
-export function IsAdmin(req: Request | any, res: Response, next: NextFunction) {
-   if (req.user && req.user.role !== "admin") {
+export function IsAdmin(req: Request, res: Response, next: NextFunction) {
+   if (req.user && req.user["role"] !== "admin") {
       return errorResponse({
          res,
          status: FORBIDDEN,
@@ -16,8 +16,8 @@ export function IsAdmin(req: Request | any, res: Response, next: NextFunction) {
    next();
 }
 
-export function IsPublisher(req: Request | any, res: Response, next: NextFunction) {
-   if (req.user && req.user.role !== "publisher") {
+export function IsPublisher(req: Request, res: Response, next: NextFunction) {
+   if (req.user && req.user["role"] !== "publisher") {
       return errorResponse({
          res,
          status: FORBIDDEN,
@@ -27,8 +27,8 @@ export function IsPublisher(req: Request | any, res: Response, next: NextFunctio
    }
    next();
 }
-export function IsReader(req: Request | any, res: Response, next: NextFunction) {
-   if (req.user && req.user.role !== "reader") {
+export function IsReader(req: Request, res: Response, next: NextFunction) {
+   if (req.user && req.user["role"] !== "reader") {
       return errorResponse({
          res,
          status: FORBIDDEN,
