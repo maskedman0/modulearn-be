@@ -3,7 +3,7 @@ import { authenticate } from "passport";
 import { Request, Response, NextFunction } from "express";
 import { config } from "dotenv";
 
-import returnError from "../functions/return-error.function";
+import error from "../functions/return-error.function";
 
 config();
 
@@ -22,13 +22,12 @@ const localAuth = authenticate("local", { session: false });
 const authGuard = jwt({ secret: process.env.API_SECRET }).unless({ path: unvalidatedPaths });
 
 const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
-   returnError({
+   return error({
       res,
       status: err.status || 500,
       message: err.message || "Server Error",
       data: { error: err.message || err },
    });
-   return;
 };
 
 export { localAuth, authGuard, errorHandler };
