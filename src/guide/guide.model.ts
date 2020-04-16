@@ -1,19 +1,5 @@
 import { MongoSchema, MongoModel } from "@mayajs/mongo";
 
-// const guideSchema = MongoSchema(
-//    {
-//       title: {
-//          required: [true, "Title is required."],
-//          type: String,
-//       },
-//       author: {
-//          required: [true, "Author is required."],
-//          type: String,
-//       },
-//    },
-//    { timestamps: true }
-// );
-
 const mediaSchema = MongoSchema({
    mediaType: {
       enum: ["image", "video"],
@@ -47,29 +33,26 @@ const guideStepSchema = MongoSchema({
    },
 });
 
-const guideEstimatedCompletionSchema = MongoSchema(
-   {
-      timeNum: {
-         default: 1,
-         type: Number,
-      },
-      unit: {
-         enum: ["minute", "hour", "day", "week"],
-         default: "hour",
-         type: String,
-      },
+const guideEstimatedCompletionSchema = MongoSchema({
+   timeNum: {
+      default: 1,
+      type: Number,
    },
-   { _id: false }
-);
+   unit: {
+      enum: ["minute", "hour", "day", "week"],
+      default: "hour",
+      type: String,
+   },
+});
 
-const guideSchema_v2 = MongoSchema(
+const guideSchema = MongoSchema(
    {
       title: {
          required: [true, "Title is required."],
          type: String,
       },
-      creator: {
-         required: [true, "Creator is required."],
+      creatorId: {
+         required: [true, "Creator ID is required"],
          type: String,
       },
       difficulty: {
@@ -78,9 +61,7 @@ const guideSchema_v2 = MongoSchema(
          type: String,
       },
       estimatedCompletion: guideEstimatedCompletionSchema,
-      intro: {
-         type: String,
-      },
+      intro: String,
       previewMedia: mediaSchema,
       steps: [guideStepSchema],
       components: [guideComponentIngredientSchema],
@@ -97,4 +78,4 @@ const guideSchema_v2 = MongoSchema(
    { timestamps: true }
 );
 
-export default MongoModel("Guide", guideSchema_v2);
+export default MongoModel("Guide", guideSchema);
